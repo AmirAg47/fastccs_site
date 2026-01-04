@@ -23,25 +23,37 @@ MEDIA_URL = '/media/'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
+import logging
 
-#LOGGING = {
- #   'version': 1,
-  #  'disable_existing_loggers': False,
-   # 'handlers': {
-    #    'file': {
-     #       'level': 'DEBUG',
-      #      'class': 'logging.FileHandler',
-       #     'filename': BASE_DIR / 'debug.log',
-        #},
-    #},
-    #'loggers': {
-     #   'django': {
-      #      'handlers': ['file'],
-       #     'level': 'DEBUG',
-        #    'propagate': True,
-        #},
-    #},
-#}
+logging.basicConfig(
+    level=logging.INFO,
+    format='[%(asctime)s] %(levelname)s %(name)s: %(message)s',
+    handlers=[
+        logging.FileHandler("celery_tasks.log"),
+        logging.StreamHandler()
+    ]
+)
+
+logger = logging.getLogger(__name__)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,   # تغییرش دادم تا لاگ نزنه
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,  # تغییرش دادم
+        },
+    },
+}
 
 CELERY_BROKER_URL = 'redis://localhost:6379/0'  # در اینجا از Redis به عنوان پیام‌رسان استفاده شده
 CELERY_ACCEPT_CONTENT = ['json']
@@ -49,7 +61,7 @@ CELERY_TASK_SERIALIZER = 'json'
 
 SECRET_KEY = 'django-insecure-4xbsz)c==-lnhxfq$2o(ltr%&aco$o53#yd*@q8hj8n62jv1)h'
 
-DEBUG = True
+DEBUG = True # تغییرش دادم
 
 ALLOWED_HOSTS = ['fastccs.com', 'www.fastccs.com']
 
@@ -128,8 +140,8 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '../fastccs/static/'
-#STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 RECAPTCHA_PUBLIC_KEY = '6LfmxSMqAAAAAJ2nw6hUp_d_Mpvf4Brb-YaHfm_k'

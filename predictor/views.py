@@ -4,7 +4,7 @@ import uuid
 import os
 import time
 import logging
-
+from datetime import timedelta
 from predictor.tasks import run_prediction_task
 import threading
 from django.shortcuts import render
@@ -20,6 +20,21 @@ import tflite_runtime.interpreter as tflite  # For TensorFlow Lite Runtime
 from .utils import property_columns
 from celery.result import AsyncResult
 from django.http import JsonResponse
+from django.core.cache import cache
+
+logger = logging.getLogger(__name__)
+
+
+try:
+    # optional: check Redis broker health
+    cache.set("celery_health_check", "ok", timeout=5)
+
+    # try to send task
+    task = run_prediction_task.delay(...)
+    logging.info(f"Submitted task ID: {task.id}")
+
+except Exception as e:
+    logging.error(f"Failed to dispatch Celery task: {e}")
 
 
 
@@ -50,89 +65,74 @@ def check_task_status(request, task_id):
             })
     return JsonResponse({'ready': False})
 
-# ⏱️ Background prediction function
-def run_prediction_in_background(new_df, results_file_path):
-    try:
-        logging.info("Prediction started.")
-        encoder = load_encoder()
-        new_adducts = new_df["Adduct"].values.reshape(-1, 1)
-        one_hot = encoder.transform(new_adducts)
-        one_hot_df = pd.DataFrame(one_hot, columns=encoder.get_feature_names_out(["Adduct"]))
-        df_encoded = pd.concat([new_df, one_hot_df], axis=1)
-
-        logging.info("One-hot encoding completed.")
-
-        properties_df = df_encoded.apply(
-            lambda row: pd.Series(safe_compute_properties(row['Smiles'], row['Adduct'])),
-            axis=1
-        )
-        properties_df.columns = property_columns
-        df_encoded = pd.concat([df_encoded, properties_df], axis=1)
-
-        logging.info("Properties computed.")
-
-        interpreter = load_model()
-        scaler = load_scaler()
-        kmeans = load_cluster()
-
-        logging.info("Model, scaler, and k-means loaded.")
-
-        predictions_df = predict_data(interpreter, df_encoded, scaler, kmeans)
-        predictions_df.to_csv(results_file_path, index=False, encoding='utf-8-sig')
-
-        logging.info(f"Prediction written to {results_file_path}")
-
-        # delete_file_after_delay(results_file_path, 300)#clean after 5 min
-        logging.info("File cleanup scheduled.")
-
-    except Exception as e:
-        logging.error(f"Prediction failed: {e}")
-        
-# 🧠 Main prediction view
+# РЈ▒№ИЈ Background prediction function
 def predict(request):
     if request.method == 'POST':
         form = CSVUploadForm(request.POST, request.FILES)
         if form.is_valid():
             uploaded_file = request.FILES['file']
 
-            # Check file size
+            # چک کردن سایز فایل
             if uploaded_file.size > 2 * 1024 * 1024:
                 form.add_error('file', 'The file size exceeds the limit of 2MB.')
                 return render(request, 'predictor/upload.html', {'form': form})
 
-            # Save file
+            # ذخیره فایل آپلود شده
             file_path = default_storage.save(uploaded_file.name, uploaded_file)
             full_path = settings.MEDIA_ROOT / file_path
 
             try:
                 new_df = pd.read_csv(full_path)
+
+                # بررسی تعداد ردیف‌ها
                 if len(new_df) > 10:
                     form.add_error('file', 'The uploaded CSV should not have more than 10 rows.')
                     return render(request, 'predictor/upload.html', {'form': form})
 
-                # Generate filename for result
+                # ساخت مسیر خروجی
                 unique_filename = f'predictions_{uuid.uuid4().hex}.csv'
-                results_file_path = settings.MEDIA_ROOT / unique_filename
+                results_file_path = os.path.join(settings.MEDIA_ROOT, unique_filename)
                 results_file_url = settings.MEDIA_URL + unique_filename
 
-               
-                # Start celery task
-                run_prediction_task.delay(new_df.to_dict(orient='records'), str(results_file_path))
+                # لاگ‌گیری و بررسی مقدارها
+                if not results_file_path:
+                    logger.error("results_file_path is empty or None.")
+                    form.add_error(None, 'Internal error occurred. Please try again.')
+                    return render(request, 'predictor/upload.html', {'form': form})
 
+                if new_df.empty:
+                    logger.error("Uploaded DataFrame is empty.")
+                    form.add_error('file', 'The uploaded CSV is empty.')
+                    return render(request, 'predictor/upload.html', {'form': form})
+
+                try:
+                    logger.info(f"Dispatching task with file: {results_file_path}")
+                    run_prediction_task.delay(new_df.to_dict(orient='records'), results_file_path)
+                except Exception as e:
+                    logger.error(f"Failed to dispatch Celery task: {e}")
+                    form.add_error(None, 'Failed to start prediction task. Please try again later.')
+                    return render(request, 'predictor/upload.html', {'form': form})
 
                 return render(request, 'predictor/results_pending.html', {
                     'results_file_url': results_file_url,
                     'message': 'Prediction is being processed. Please download after a few moments.'
-
                 })
 
+            except Exception as e:
+                logger.exception(f"Error while handling uploaded file: {e}")
+                form.add_error(None, 'Error reading your CSV file. Please check its format.')
 
             finally:
                 if os.path.exists(full_path):
                     os.remove(full_path)
+
     else:
         form = CSVUploadForm()
+
     return render(request, 'predictor/upload.html', {'form': form})
+    
+    
+    
 
 # Other views
 def redirect_to_predict(request):

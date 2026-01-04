@@ -1,0 +1,85 @@
+INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+ 
+ -------------- celery@faraz.pws-dns.net v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.14.0-503.38.1.el9_5.x86_64-x86_64-with-glibc2.34 2025-05-17 17:40:02
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         ccspredictor:0x7fd3bea72050
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     disabled://
+- *** --- * --- .> concurrency: 5 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . predictor.tasks.run_prediction_task
+
+[2025-05-17 17:40:03,011: WARNING/MainProcess] /home/fastccsc/virtualenv/fastccs/3.11/lib/python3.11/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2025-05-17 17:40:03,015: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2025-05-17 17:40:03,015: WARNING/MainProcess] /home/fastccsc/virtualenv/fastccs/3.11/lib/python3.11/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2025-05-17 17:40:03,017: INFO/MainProcess] mingle: searching for neighbors
+[2025-05-17 17:40:04,021: WARNING/MainProcess] /home/fastccsc/virtualenv/fastccs/3.11/lib/python3.11/site-packages/celery/app/control.py:56: DuplicateNodenameWarning: Received multiple replies from node name: celery@faraz.pws-dns.net.
+Please make sure you give each node a unique nodename using
+the celery worker `-n` option.
+  warnings.warn(DuplicateNodenameWarning(
+
+[2025-05-17 17:40:04,022: INFO/MainProcess] mingle: all alone
+[2025-05-17 17:40:04,026: INFO/MainProcess] celery@faraz.pws-dns.net ready.
+
+worker: Hitting Ctrl+C again will terminate all running tasks!
+
+worker: Warm shutdown (MainProcess)
+INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+ 
+ -------------- celery@faraz.pws-dns.net v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-5.14.0-503.38.1.el9_5.x86_64-x86_64-with-glibc2.34 2025-05-17 17:41:37
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         ccspredictor:0x7fac31761f90
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     disabled://
+- *** --- * --- .> concurrency: 5 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . predictor.tasks.run_prediction_task
+
+[2025-05-17 17:41:37,430: WARNING/MainProcess] /home/fastccsc/virtualenv/fastccs/3.11/lib/python3.11/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2025-05-17 17:41:37,433: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2025-05-17 17:41:37,434: WARNING/MainProcess] /home/fastccsc/virtualenv/fastccs/3.11/lib/python3.11/site-packages/celery/worker/consumer/consumer.py:508: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2025-05-17 17:41:37,435: INFO/MainProcess] mingle: searching for neighbors
+[2025-05-17 17:41:38,438: INFO/MainProcess] mingle: all alone
+[2025-05-17 17:41:38,442: INFO/MainProcess] celery@faraz.pws-dns.net ready.
+
+worker: Hitting Ctrl+C again will terminate all running tasks!
+
+worker: Warm shutdown (MainProcess)
