@@ -55,13 +55,17 @@ LOGGING = {
     },
 }
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'  # در اینجا از Redis به عنوان پیام‌رسان استفاده شده
+CELERY_BROKER_URL = "redis://fastccs1-yqq-service:6379/0"  # در اینجا از Redis به عنوان پیام‌رسان استفاده شده
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
-SECRET_KEY = 'django-insecure-4xbsz)c==-lnhxfq$2o(ltr%&aco$o53#yd*@q8hj8n62jv1)h'
+SECRET_KEY = 'h4POa4K8XwfzSYlZjnbu'
 
 DEBUG = True # تغییرش دادم
+
+# تنظیمات Celery برای استفاده از Redis به عنوان بروکر
+CELERY_BROKER_URL = "redis://fastccs1-yqq-service:6379/0"
+CELERY_BROKER_PASSWORD = 'h4POa4K8XwfzSYlZjnbu'
 
 ALLOWED_HOSTS = ['fastccs.com', 'www.fastccs.com', 'fastccs.runflare.run', 'www.fastccs.runflare.run']
 
