@@ -63,7 +63,7 @@ SECRET_KEY = 'django-insecure-4xbsz)c==-lnhxfq$2o(ltr%&aco$o53#yd*@q8hj8n62jv1)h
 
 DEBUG = True # تغییرش دادم
 
-ALLOWED_HOSTS = ['fastccs.com', 'www.fastccs.com']
+ALLOWED_HOSTS = ['fastccs.com', 'www.fastccs.com', 'fastccs.runflare.run', 'www.fastccs.runflare.run']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
