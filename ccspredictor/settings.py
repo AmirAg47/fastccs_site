@@ -67,7 +67,7 @@ DEBUG = True # تغییرش دادم
 CELERY_BROKER_URL = "redis://fastccs1-yqq-service:6379/0"
 CELERY_BROKER_PASSWORD = 'h4POa4K8XwfzSYlZjnbu'
 
-ALLOWED_HOSTS = ['fastccs.com', 'www.fastccs.com', 'fastccs.runflare.run', 'www.fastccs.runflare.run']
+ALLOWED_HOSTS = ['fastccs.com', 'www.fastccs.com', 'https://fastccs.com' 'fastccs.runflare.run', 'www.fastccs.runflare.run']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
