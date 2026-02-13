@@ -70,20 +70,7 @@ DEBUG = True # تغییرش دادم
 CELERY_BROKER_URL = "redis://fastccs1-yqq-service:6379/0"
 CELERY_BROKER_PASSWORD = 'h4POa4K8XwfzSYlZjnbu'
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-# اجباری کردن ریدایرکت HTTP → HTTPS
-SECURE_SSL_REDIRECT = True
-
-# Cookies امن
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-
-# دامنه‌های معتبر برای CSRF
-CSRF_TRUSTED_ORIGINS = [
-    "https://fastccs.com",
-    "https://www.fastccs.com",
-]
+SALLOWED_HOSTS = ['fastccs.com', 'www.fastccs.com', 'https://fastccs.com' , 'fastccs.runflare.run', 'www.fastccs.runflare.run', 'https://www.fastccs.com']
 
 # Production
 DEBUG = False
