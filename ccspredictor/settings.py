@@ -70,17 +70,37 @@ DEBUG = True # تغییرش دادم
 CELERY_BROKER_URL = "redis://fastccs1-yqq-service:6379/0"
 CELERY_BROKER_PASSWORD = 'h4POa4K8XwfzSYlZjnbu'
 
-ALLOWED_HOSTS = ['fastccs.com', 'www.fastccs.com', 'https://fastccs.com' , 'fastccs.runflare.run', 'www.fastccs.runflare.run', 'https://www.fastccs.com']
+# ALLOWED_HOSTS = ['fastccs.com', 'www.fastccs.com', 'https://fastccs.com' , 'fastccs.runflare.run', 'www.fastccs.runflare.run', 'https://www.fastccs.com']
+
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# True
+
+# # دامنه‌های معتبر برای CSRF
+# CSRF_TRUSTED_ORIGINS = [
+#     'fastccs.com', 'www.fastccs.com', 'https://fastccs.com' , 'fastccs.runflare.run', 'www.fastccs.runflare.run', 'https://www.fastccs.com'
+# ]
+
+ALLOWED_HOSTS = [
+    'fastccs.com',
+    'www.fastccs.com',
+    'fastccs.runflare.run',
+    'www.fastccs.runflare.run',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://fastccs.com',
+    'https://www.fastccs.com',
+    'https://fastccs.runflare.run',
+    'https://www.fastccs.runflare.run',
+]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-True
+SECURE_SSL_REDIRECT = True
 
-# دامنه‌های معتبر برای CSRF
-CSRF_TRUSTED_ORIGINS = [
-    'fastccs.com', 'www.fastccs.com', 'https://fastccs.com' , 'fastccs.runflare.run', 'www.fastccs.runflare.run', 'https://www.fastccs.com'
-]
-
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 INSTALLED_APPS = [
     'django.contrib.admin',
