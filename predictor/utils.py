@@ -43,17 +43,17 @@ def load_cluster():
 def safe_compute_properties(smiles, adduct):  # Add adduct here
     try:
         if pd.isna(smiles) or isinstance(smiles, float):
-            return [np.nan] * 320
+            return [np.nan] * 331
         return compute_molecular_properties(smiles, adduct)  # Pass adduct to this function
     except Exception as e:
         print(f"Error processing SMILES: {smiles}, Error: {e}")
-        return [np.nan] * 320
+        return [np.nan] * 331
 def compute_molecular_properties(smiles, adduct):
     # Create the molecule from the SMILES string
     mol = Chem.MolFromSmiles(smiles)
     if mol is None:
         print(f"Invalid SMILES: {smiles}")
-        return [np.nan] * 320  # Return NaN for all properties if molecule cannot be processed
+        return [np.nan] * 331  # Return NaN for all properties if molecule cannot be processed
 
     # Add explicit hydrogens
     #mol = Chem.AddHs(mol)
@@ -68,7 +68,7 @@ def compute_molecular_properties(smiles, adduct):
         conf_ids = AllChem.EmbedMultipleConfs(mol, numConfs=1, params=ps)
         if len(conf_ids) == 0:
             print(f"Failed to embed molecule for SMILES: {smiles}")
-            return [np.nan] * 33  # Return NaN for all properties if embedding fails
+            return [np.nan] * 331  # Return NaN for all properties if embedding fails
 
 
     # Optimize the conformation
@@ -239,7 +239,7 @@ def compute_molecular_properties(smiles, adduct):
                       mzagreb1, mzagreb2, asphericity,radius_of_gyration, o_heterocycles, n_heterocycles, 
                       s_heterocycles, total_heterocycles, halogen_count, mZ]
 
-    return general_values + special_values  + mqn_values
+    return general_values + mqn_values + special_values
     
     
 #def predict_data(model, data):
