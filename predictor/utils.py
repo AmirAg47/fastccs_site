@@ -180,7 +180,7 @@ def compute_molecular_properties(smiles, adduct):
  
     def calculate_mz(adduct):
         adduct = str(adduct)  # Ensure 'Adduct' is a string
-        M = Chem.Descriptors.MolWt(mol) # Accessing the ExactMolWt column for M weights
+        M = Chem.Descriptors.ExactMolWt(mol) # Accessing the ExactMolWt column for M weights
         base_mass = M  # Start with base mass as M
         mass_dict = {
                         'H': 1.0078, 'Na': 22.9898, 'K': 39.0983, 'Li': 6.941,
@@ -284,12 +284,12 @@ special_columns = [
     'Aromatic_Count','sasa','Shannon_Entropy', 'PBF', 'Wiener_Index',
     'Zagreb1', 'Zagreb2', 'MZagreb1', 'MZagreb2', 'asphericity', 'radius_of_gyration',
     'o_heterocycles', 'n_heterocycles', 's_heterocycles', 'total_heterocycles', 'halogen_count',
-    'm/z'
+    'mz'
 ]
 
 mqn_columns = [f"MQN_{i+1}" for i in range(42)]
 
-property_columns = general_columns + special_columns + mqn_columns
+property_columns = general_columns + mqn_columns + special_columns
 
 
 def predict_data(interpreter, data, scaler, kmeans, feature_indices=None) -> pd.DataFrame:
@@ -324,7 +324,7 @@ def predict_data(interpreter, data, scaler, kmeans, feature_indices=None) -> pd.
     print(f"Scaled data shape: {data_copy.shape}")
     
     #Clustering
-    selected_features = data_copy[:, 51:320]
+    selected_features = data_copy[:, 62:331]
     cluster = kmeans.predict(selected_features)
     data_copy = pd.DataFrame(data_copy)
     data_copy['Cluster'] = cluster
@@ -374,19 +374,19 @@ def predict_data(interpreter, data, scaler, kmeans, feature_indices=None) -> pd.
 
     result_df['Smiles'] = smiles_and_adduct['Smiles']
     result_df['Adduct'] = smiles_and_adduct['Adduct']
-    result_df['m/z'] = smiles_and_adduct['m/z']
+    result_df['mz'] = smiles_and_adduct['mz']
     result_df['Cluster'] = cluster  # Add the cluster column from the KMeans model
     cluster_names = {
-    0: "PFAS",
-    1: "Lipid",
-    2: "Small Molecule",
-    3: "Medium Peptide",
-    4: "Short Peptide",
-    5: "Long Peptide",
-    6: "Lipid"
+    0: "Small Molecule",
+    1: "Long Peptide",
+    2: "Unknonw",
+    3: "Lipid",
+    4: "Medium Peptide",
+    5: "Short Peptide",
+    6: "Steroid"
     }
     result_df['Cluster'] = result_df['Cluster'].map(cluster_names)
     # Select the required columns ('Smiles', 'Adduct', and 'Predictions')
-    result_df = result_df[['Smiles', 'Adduct', 'CCS Å²', 'm/z', 'Cluster']]
+    result_df = result_df[['Smiles', 'Adduct', 'CCS Å²', 'mz', 'Cluster']]
     
     return result_df
