@@ -313,7 +313,7 @@ def predict_data(interpreter, data, scaler, kmeans, feature_indices=None) -> pd.
     data_copy = data.copy()
 
     # Save 'Smiles' and 'Adduct' columns for later (they will not be used in scaling/prediction)
-    smiles_and_adduct = data_copy[['Smiles', 'Adduct', 'm/z']]  
+    smiles_and_adduct = data_copy[['Smiles', 'Adduct', 'mz']]  
     data_copy = data_copy.drop(columns=['Smiles', 'Adduct'])  # Drop them for scaling and prediction
 
     # Apply the pre-fitted scaler to all columns in the data
