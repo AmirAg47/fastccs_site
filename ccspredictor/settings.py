@@ -72,7 +72,6 @@ CELERY_BROKER_PASSWORD = 'h4POa4K8XwfzSYlZjnbu'
 
 ALLOWED_HOSTS = ['fastccs.com', 'www.fastccs.com', 'https://fastccs.com' , 'fastccs.runflare.run', 'www.fastccs.runflare.run', 'https://www.fastccs.com']
 CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
