@@ -74,12 +74,7 @@ ALLOWED_HOSTS = ['fastccs.com', 'www.fastccs.com', 'https://fastccs.com' , 'fast
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# اجباری کردن ریدایرکت HTTP → HTTPS
-SECURE_SSL_REDIRECT = True
-
-# Cookies امن
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+True
 
 # دامنه‌های معتبر برای CSRF
 CSRF_TRUSTED_ORIGINS = [
